@@ -23,6 +23,8 @@ class BinanceFutureClient:
         else:
             self.base_url = "https://fapi.binanc.com"
 
+        logger.info("Binance Future client Succesfully initialized")
+
 
 
 
