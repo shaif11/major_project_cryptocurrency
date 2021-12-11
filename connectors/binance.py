@@ -35,11 +35,11 @@ class BinanceFutureClient:
             return response.json()
         else:
             logger.error("error while making %s request to %s: %s (error code %s) method, endpoint, response.json(), response.status_code")
-            return none
+            return None
 
 
     def get_contacts(self):
-        request.get()
+        exchange_info = self.make_request("GET","/fapi/v1/exchangeInfo", None)
         return
 
     def get_historical_candles(self):
