@@ -42,6 +42,8 @@ class BinanceFutureClient:
         exchange_info = self.make_request("GET","/fapi/v1/exchangeInfo", None)
         return
 
+        contracts = dict()
+
         if exchange_info is not None:
             for contract in exchange_info['symbols']:
                 contracts[s['pair']] = contract_data
