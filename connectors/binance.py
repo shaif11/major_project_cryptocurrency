@@ -44,6 +44,8 @@ class BinanceFutureClient:
 
         if exchange_info is not None:
             for contract in exchange_info['symbols']:
+                contracts[s['pair']] = contract_data
+
 
     def get_historical_candles(self):
         request.get()
