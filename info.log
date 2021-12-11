@@ -1,0 +1,4 @@
+2021-09-29 04:47:22,854 INFO :: basic
+2021-09-29 04:47:22,855 WARNING :: attention message
+2021-09-29 04:47:22,855 ERROR :: this message helps to debug an error
+2021-09-29 04:47:22,855 INFO :: hello from the binance

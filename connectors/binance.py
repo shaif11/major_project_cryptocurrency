@@ -54,7 +54,6 @@ class BinanceFutureClient:
         return
 
     def get_bid_ask(self):
-        request.get()
         return
 
 
