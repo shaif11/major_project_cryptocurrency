@@ -25,6 +25,12 @@ class BinanceFutureClient:
 
         logger.info("Binance Future client Succesfully initialized")
 
+    def get_contacts(self):
+        return
+
+    def get_historical_candles(self):
+        return
+
 
 
 
