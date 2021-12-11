@@ -9,4 +9,11 @@ def get_contracts():
     contracts = []
 
 
+    for contract in response_object.json()['symbols']
+        contracts.append(contract['pair'])
+
+    return contracts
+
+
+
 
