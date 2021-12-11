@@ -48,7 +48,7 @@ class BinanceFutureClient:
         return contracts
 
     def get_historical_candles(self):
-        request.get()
+        "https://fapi.binance.com/fapi/v1/exchangeInfo"
         return
 
     def get_bid_ask(self):
