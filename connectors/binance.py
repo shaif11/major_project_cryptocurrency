@@ -14,6 +14,17 @@ def get_contracts():
 
     return contracts
 
+print(get_contracts())
+
+class BinanceFutureClient:
+    def __init__(self, testnet):
+        if testnet:
+            self.base_url = "https://fapi.binance.com/fapi/v1/exchangeInfo"
+        else:
+            self.base_url = "https://fapi.binanc.com"
+
+
+
 
 
 
