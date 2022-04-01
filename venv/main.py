@@ -1,6 +1,7 @@
 import tkinter as tk
 import logging
-from bitmex import get_contracts
+
+from connectors.binance_futures import BinanceFuturesClient
 
 
 logger = logging.getLogger()
