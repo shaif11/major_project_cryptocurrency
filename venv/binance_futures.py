@@ -71,3 +71,6 @@ class BinanceFuturesClient:
 
     def get_balances(self):
         return
+
+    def place_order(self):
+        return
