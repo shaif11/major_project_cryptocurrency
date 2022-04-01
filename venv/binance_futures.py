@@ -74,3 +74,6 @@ class BinanceFuturesClient:
 
     def place_order(self):
         return
+
+    def cancel_order(self):
+        return
