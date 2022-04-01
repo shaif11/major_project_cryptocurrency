@@ -77,3 +77,6 @@ class BinanceFuturesClient:
 
     def cancel_order(self):
         return
+
+    def get_order_status(self):
+        return
