@@ -68,3 +68,6 @@ class BinanceFuturesClient:
                 self.prices[symbol]['ask'] = float(ob_data['askPrice'])
 
         return self.prices[symbol]
+
+    def get_balances(self):
+        return
