@@ -22,7 +22,9 @@ logger.addHandler(file_handler)
 if __name__ == '__main__':
 
    binance = BinanceFuturesClient(True)
-   print(binance.get_historical_candles("BTCUSDT", "1h"))
+   print(binance.get_balances())
+   print(binance.place_order("BTCUSDT", "BUY", 0.01, "LIMIT", 2000, "GTC"))
+   print(binance.get_order_status("BTCUSDT", 2612334776))
 
    root = tk.Tk()
    root.mainloop()
