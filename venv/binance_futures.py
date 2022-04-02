@@ -1,20 +1,35 @@
 import logging
 import requests
+import time
+
+from urllib.parse import urlencode
+
+import hmac
+import haslib
 import  pprint
 
 logger = logging.getLogger()
 
 
 class BinanceFuturesClient:
-    def __init__(self, testnet):
+    def __init__(self, public_key, secret_key, testnet):
         if testnet:
             self.base_url = "https://testnet.binancefuture.com"
         else:
             self.base_url = "https://fapi.binance.com"
 
+        self.public_key = public_key
+        self.secret_key = secret_key
+
+        self.headers = {'X-MBX-APIKEY': self.public_key}
+
         self.prices = dict()
 
         logger.info("Binance Futures Client successfully intialized")
+
+    def generate_signature(self, data):
+        return hmac.new(self.secret_key.encode(), urlencode(data).encode(), hashlib.sha256).hexdigest()
+
 
     def make_request(self, method, endpoint, data):
         if method == "GET":
@@ -70,7 +85,19 @@ class BinanceFuturesClient:
         return self.prices[symbol]
 
     def get_balances(self):
-        return
+        data = dict()
+        data['timestamp'] = int(time.time() * 1000)
+        data['signature'] = self.generate_signature(data)
+
+        balances = dict()
+
+        account_data = self.make_request("GET", "/fapi/v1/account", data)
+
+        if account_data is not None:
+            for a in account_data['assets']:
+                balances[a['asset']] = a
+
+        return balances
 
     def place_order(self):
         return
@@ -78,5 +105,14 @@ class BinanceFuturesClient:
     def cancel_order(self):
         return
 
-    def get_order_status(self):
-        return
+    def get_order_status(self, symbol, order_id):
+
+        data = dict()
+        data['timestamp'] = int(time.time() * 1000)
+        data['symbol'] = symbol
+        data['orderId'] = order_id
+        data['signature'] = self.generate_signature(data)
+
+        self.make_request("GET", "/fapi/v1/order", data)
+
+        return order_status
