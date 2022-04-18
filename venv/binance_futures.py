@@ -76,7 +76,7 @@ class BinanceFuturesClient:
 
         return contracts
 
-    def get_historical_candles(self, contract: Contract, interval: str):
+    def get_historical_candles(self, contract: Contract, interval: str) -> typing.List[Candle]:
         data = dict()
         data['symbol'] = contract.symbol
         data['interval'] = interval
