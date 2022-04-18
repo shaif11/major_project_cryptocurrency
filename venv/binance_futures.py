@@ -9,7 +9,10 @@ import haslib
 
 import websocket
 import json
-import  pprint
+
+import threading
+
+from models import *
 
 logger = logging.getLogger()
 
@@ -103,6 +106,8 @@ class BinanceFuturesClient:
         if account_data is not None:
             for a in account_data['assets']:
                 balances[a['asset']] = Balance(a)
+
+        print(balances['USDT'].wallet_balance)
 
         return balances
 
