@@ -6,6 +6,9 @@ from urllib.parse import urlencode
 
 import hmac
 import haslib
+
+import websocket
+import json
 import  pprint
 
 logger = logging.getLogger()
@@ -99,7 +102,7 @@ class BinanceFuturesClient:
 
         if account_data is not None:
             for a in account_data['assets']:
-                balances[a['asset']] = a
+                balances[a['asset']] = Balance(a)
 
         return balances
 
