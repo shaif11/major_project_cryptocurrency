@@ -45,11 +45,11 @@ class BinanceFuturesClient:
 
         logger.info("Binance Futures Client successfully intialized")
 
-    def generate_signature(self, data: dict):
+    def generate_signature(self, data: typing.Dict):
         return hmac.new(self.secret_key.encode(), urlencode(data).encode(), hashlib.sha256).hexdigest()
 
 
-    def make_request(self, method, endpoint, data):
+    def make_request(self, method: str, endpoint: str, data: typing.Dict):
         if method == "GET":
             response = requests.get(self.base_url + endpoint, params=data, headers=self.headers)
         elif method == "POST":
@@ -76,9 +76,9 @@ class BinanceFuturesClient:
 
         return contracts
 
-    def get_historical_candles(self, symbol, interval):
+    def get_historical_candles(self, contract: Contract, interval):
         data = dict()
-        data['symbol'] = symbol
+        data['symbol'] = contract.symbol
         data['interval'] = interval
         data['limit'] = 1000
 
