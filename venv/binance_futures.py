@@ -45,7 +45,7 @@ class BinanceFuturesClient:
 
         logger.info("Binance Futures Client successfully intialized")
 
-    def generate_signature(self, data: typing.Dict):
+    def generate_signature(self, data: typing.Dict) -> str:
         return hmac.new(self.secret_key.encode(), urlencode(data).encode(), hashlib.sha256).hexdigest()
 
 
@@ -65,8 +65,8 @@ class BinanceFuturesClient:
             logger.error("Error while making %s request to %s: %s (eror code %s)", method, endpoint, response.json(), response.status_code)
             return None
 
-    def get_contracts(self):
-        exchange_info = self.make_request("GET", "/fapi/v1/exchangeInfo", None)
+    def get_contracts(self) -> typing.Dict[str, Contract]:
+        exchange_info = self.make_request("GET", "/fapi/v1/exchangeInfo", dict())
 
         contracts = dict()
 
@@ -93,7 +93,7 @@ class BinanceFuturesClient:
 
         return candles
 
-    def get_bid_ask(self, contract: Contract):
+    def get_bid_ask(self, contract: Contract) -> typing.Dict[str, float]:
         data = dict()
         data['symbol'] = contract.symbol
         ob_data =  self.make_request("GET", "/fapi/v1/ticker/bookTicker", data)
@@ -107,7 +107,7 @@ class BinanceFuturesClient:
 
             return self.prices[contract.symbol]
 
-    def get_balances(self):
+    def get_balances(self) -> typing.Dict[str, Balance]:
         data = dict()
         data['timestamp'] = int(time.time() * 1000)
         data['signature'] = self.generate_signature(data)
@@ -122,7 +122,7 @@ class BinanceFuturesClient:
 
         return balances
 
-    def place_order(self, contract: Contract, side: str, quantity: float, order_type: str, price=None, tif=None):
+    def place_order(self, contract: Contract, side: str, quantity: float, order_type: str, price=None, tif=None) -> OrderStatus:
         data = dict()
         data['symbol'] = contract.symbol
         data['side'] = side
@@ -145,7 +145,7 @@ class BinanceFuturesClient:
 
         return order_status
 
-    def cancel_order(self, contract: Contract, order_id: int):
+    def cancel_order(self, contract: Contract, order_id: int) -> OrderStatus:
 
         data =dict()
         data['order_id'] = order_id
@@ -161,7 +161,7 @@ class BinanceFuturesClient:
 
         return order_status
 
-    def get_order_status(self, contract: Contract, order_id: int):
+    def get_order_status(self, contract: Contract, order_id: int) -> OrderStatus:
 
         data = dict()
         data['timestamp'] = int(time.time() * 1000)
@@ -206,7 +206,6 @@ class BinanceFuturesClient:
                     self.prices[symbol]['bid'] = float(data['b'])
                     self.prices[symbol]['ask'] = float(data['a'])
 
-                print(self.prices[symbol])
 
     def subscribe_channel(self, contract: Contract):
         data = dict()

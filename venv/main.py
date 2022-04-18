@@ -22,7 +22,7 @@ logger.addHandler(file_handler)
 if __name__ == '__main__':
 
    binance = BinanceFuturesClient("42da1a468b48c41f7974333ed77b22b898d81b914d2bfcc09d1f520da376a6d6cb7f9c30475b5410730640836205e3dca232f9f5115409870bd6fe30dd3add53", True)
-
+   candles = binance.get_historical_candles
 
    root = tk.Tk()
    root.mainloop()
