@@ -29,7 +29,16 @@ class BinanceFuturesClient:
 
         self.headers = {'X-MBX-APIKEY': self.public_key}
 
+        self.contracts = self.get_contracts()
+        self.balances = self.get_balances()
+
         self.prices = dict()
+
+        self.id = 1
+        self.ws = None
+
+        t = threading.Thread(target=self.start_ws)
+        t.start()
 
         logger.info("Binance Futures Client successfully intialized")
 
@@ -60,7 +69,7 @@ class BinanceFuturesClient:
 
         if exchange_info is not None:
             for contract_data in exchange_info['symbols']:
-                contracts[contract_data['pair']] = contract_data
+                contracts[contract_data['pair']] = Contract(contract_data)
 
         return contracts
 
@@ -107,8 +116,6 @@ class BinanceFuturesClient:
         if account_data is not None:
             for a in account_data['assets']:
                 balances[a['asset']] = Balance(a)
-
-        print(balances['USDT'].wallet_balance)
 
         return balances
 
