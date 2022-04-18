@@ -18,3 +18,13 @@ class Candle:
         self.close = float(candle_info[4])
         self.volume = float(candle_info[5])
 
+
+class Contract:
+    def __init__(self, contract_info):
+        self.symbol = contract_info['symbol']
+        self.base_asset = contract_info['baseAsset']
+        self.quote_asset = contract_info['quoteAsset']
+        self.price_decimals = contract_info['pricePrecision']
+        self.quantity_decimals = contract_info['quantityPrecision']
+
+
