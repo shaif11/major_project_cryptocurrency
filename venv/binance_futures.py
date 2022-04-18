@@ -18,11 +18,13 @@ logger = logging.getLogger()
 
 
 class BinanceFuturesClient:
-    def __init__(self, public_key, secret_key, testnet):
+    def __init__(self, public_key: str, secret_key:str, testnet: bool):
         if testnet:
             self.base_url = "https://testnet.binancefuture.com"
+            self.wss_url = "wss//stream.binancefuture.com/ws"
         else:
             self.base_url = "https://fapi.binance.com"
+            self.wss_url = "wss://stream.binance.com/ws"
 
         self.public_key = public_key
         self.secret_key = secret_key
@@ -137,6 +139,9 @@ class BinanceFuturesClient:
 
         order_status = self.make_request("POST", "/fapi/v1/order", data)
 
+        if order_status is not None:
+            order_status = OrderStatus(order_status)
+
         return order_status
 
     def cancel_order(self):
@@ -149,6 +154,10 @@ class BinanceFuturesClient:
         data['signature'] = self.generate_signature(data)
 
         order_status = self.make_request("DELETE", "/fapi/v1/order", data)
+
+        if order_status is not None:
+            order_status = OrderStatus(order_status)
+
         return order_status
 
     def get_order_status(self, symbol, order_id):
@@ -159,6 +168,16 @@ class BinanceFuturesClient:
         data['orderId'] = order_id
         data['signature'] = self.generate_signature(data)
 
-        self.make_request("GET", "/fapi/v1/order", data)
+        order_status = self.make_request("GET", "/fapi/v1/order", data)
+
+        if order_status is not None:
+            order_status = OrderStatus(order_status)
 
         return order_status
+
+    def start_ws(self):
+        self.ws = websocketApp(self.wss_url, on_open=self.on_open, on_close=self.on_close, on_error=self.on_error, on_message=self.on_message)
+        self.ws.run_forever()
+
+
+
