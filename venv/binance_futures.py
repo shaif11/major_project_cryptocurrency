@@ -188,5 +188,33 @@ class BinanceFuturesClient:
     def on_close(self):
         logger.warning("Binance Websocket connection closed")
 
+    def on_error(self, msg: str):
+        logger.error("Binance connection error: %s", msg)
 
+    def on_message(self, msg: str):
 
+        data = json.loads(msg)
+
+        if "e" in data:
+            if data['e'] == "bookTicker":
+
+                symbol = data['s']
+
+                if symbol not in self.prices:
+                    self.prices[symbol] = {'bid': float(data['b']), 'ask': float(data['a'])}
+                else:
+                    self.prices[symbol]['bid'] = float(data['b'])
+                    self.prices[symbol]['ask'] = float(data['a'])
+
+                print(self.prices[symbol])
+
+    def subscribe_channel(self, contract: Contract):
+        data = dict()
+        data['method'] = "SUBSCRIBE"
+        data['params'] = []
+        data['params'].append(contract.symbol.lower() + "@bookkTicker")
+        data['id'] = self.id
+
+        self.ws.send(json.dumps(data))
+
+        self.id += 1
