@@ -1,6 +1,7 @@
 import logging
 import requests
 import time
+import typing
 
 from urllib.parse import urlencode
 
@@ -44,7 +45,7 @@ class BinanceFuturesClient:
 
         logger.info("Binance Futures Client successfully intialized")
 
-    def generate_signature(self, data):
+    def generate_signature(self, data: dict):
         return hmac.new(self.secret_key.encode(), urlencode(data).encode(), hashlib.sha256).hexdigest()
 
 
