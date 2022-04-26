@@ -51,7 +51,11 @@ class BinanceFuturesClient:
 
     def make_request(self, method: str, endpoint: str, data: typing.Dict):
         if method == "GET":
-            response = requests.get(self.base_url + endpoint, params=data, headers=self.headers)
+            try:
+                response = requests.get(self.base_url + endpoint, params=data, headers=self.headers)
+            except Exception as e:
+                logger.error("Connection error while making %s request to %s: %s", method, endpoint, e)
+
         elif method == "POST":
             response = requests.post(self.base_url + endpoint, params=data, headers=self.headers)
         elif method == "DELETE":
