@@ -38,6 +38,8 @@ class BinanceFuturesClient:
 
         self.prices = dict()
 
+        self.logs = []
+
         self._ws_id = 1
         self._ws = None
 
@@ -45,6 +47,10 @@ class BinanceFuturesClient:
         t.start()
 
         logger.info("Binance Futures Client successfully initialized")
+
+    def _add_log(self, msg: str):
+        logger.info("%s", msg)
+        self.logs.append({"log": msg, "displayed": False})
 
     def _generate_signature(self, data: typing.Dict) -> str:
         return hmac.new(self._secret_key.encode(), urlencode(data).encode(), hashlib.sha256).hexdigest()
@@ -87,7 +93,7 @@ class BinanceFuturesClient:
 
         if exchange_info is not None:
             for contract_data in exchange_info['symbols']:
-                contracts[contract_data['pair']] = Contract(contract_data, "binance")
+                contracts[contract_data['symbol']] = Contract(contract_data, "binance")
 
         return contracts
 
@@ -231,7 +237,7 @@ class BinanceFuturesClient:
     def subscribe_channel(self, contracts: typing.List[Contract], channel: str):
         data = dict()
         data['method'] = "SUBSCRIBE"
-        data['params'] = []
+        data['params'] =
         for contract in contracts:
             data['params'].append(contract.symbol.lower() + "@" + channel)
         data['id'] = self._ws_id
@@ -242,4 +248,3 @@ class BinanceFuturesClient:
             logger.error("Websocket error while subscribing to %s %s updates: %s", len(contracts), channel, e)
 
         self._ws_id += 1
-
