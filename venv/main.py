@@ -1,8 +1,9 @@
-import tkinter as tk
 import logging
 
 from connectors.binance_futures import BinanceFuturesClient
 from connectors.bitmex import BitmexClient
+
+from interface.root_component import Root
 
 
 logger = logging.getLogger()
@@ -25,7 +26,7 @@ logger.addHandler(file_handler)
 if __name__ == '__main__':
 
     binance = BinanceFuturesClient("", "", True)
-    bitmex = BitmexClient("uXr1T711wD-", "", True)
+    bitmex = BitmexClient("", "", True)
 
-    root = tk.Tk()
+    root = Root(binance, bitmex)
     root.mainloop()
