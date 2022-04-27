@@ -237,7 +237,7 @@ class BinanceFuturesClient:
     def subscribe_channel(self, contracts: typing.List[Contract], channel: str):
         data = dict()
         data['method'] = "SUBSCRIBE"
-        data['params'] =
+        data['params'] = []
         for contract in contracts:
             data['params'].append(contract.symbol.lower() + "@" + channel)
         data['id'] = self._ws_id
