@@ -103,13 +103,3 @@ class Watchlist(tk.Frame):
 
         self._body_index += 1
 
-
-
-
-
-
-
-
-
-
-
